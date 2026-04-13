@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  pgvector:
+    image: pgvector/pgvector:0.8.0-pg17
+    container_name: pgvector
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgvector_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: text2sql123
+      POSTGRES_DB: text2sql_db
+    networks:
+      - backend
+    restart: always
+
+networks:
+  backend:
+
+volumes:
+  pgvector_data:
