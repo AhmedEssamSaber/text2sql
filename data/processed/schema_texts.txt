@@ -1,0 +1,30 @@
+Table customers:
+- id (UUID, PK)
+- name (VARCHAR)
+- email (VARCHAR)
+- country (VARCHAR)
+
+Table products:
+- id (UUID, PK)
+- name (VARCHAR)
+- price (INTEGER)
+- category_id (UUID, FK → categories.id)
+
+Table categories:
+- id (UUID, PK)
+- name (VARCHAR)
+
+Table orders:
+- id (UUID, PK)
+- customer_id (UUID, FK → customers.id)
+- order_date (DATE)
+- status (VARCHAR)
+- total_amount (INTEGER)
+
+Table order_items:
+- id (UUID, PK)
+- order_id (UUID, FK → orders.id)
+- product_id (UUID, FK → products.id)
+- quantity (INTEGER)
+- price (INTEGER)
+

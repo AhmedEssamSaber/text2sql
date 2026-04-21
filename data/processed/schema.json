@@ -1,0 +1,191 @@
+[
+  {
+    "table": "customers",
+    "columns": [
+      {
+        "name": "id",
+        "type": "UUID",
+        "nullable": false,
+        "primary_key": true
+      },
+      {
+        "name": "name",
+        "type": "VARCHAR",
+        "nullable": false,
+        "primary_key": false
+      },
+      {
+        "name": "email",
+        "type": "VARCHAR",
+        "nullable": false,
+        "primary_key": false
+      },
+      {
+        "name": "country",
+        "type": "VARCHAR",
+        "nullable": false,
+        "primary_key": false
+      }
+    ],
+    "relationships": []
+  },
+  {
+    "table": "products",
+    "columns": [
+      {
+        "name": "id",
+        "type": "UUID",
+        "nullable": false,
+        "primary_key": true
+      },
+      {
+        "name": "name",
+        "type": "VARCHAR",
+        "nullable": false,
+        "primary_key": false
+      },
+      {
+        "name": "price",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary_key": false
+      },
+      {
+        "name": "category_id",
+        "type": "UUID",
+        "nullable": true,
+        "primary_key": false,
+        "foreign_key": {
+          "referred_table": "categories",
+          "referred_column": "id"
+        }
+      }
+    ],
+    "relationships": [
+      {
+        "from_column": "category_id",
+        "to_table": "categories",
+        "to_column": "id"
+      }
+    ]
+  },
+  {
+    "table": "categories",
+    "columns": [
+      {
+        "name": "id",
+        "type": "UUID",
+        "nullable": false,
+        "primary_key": true
+      },
+      {
+        "name": "name",
+        "type": "VARCHAR",
+        "nullable": false,
+        "primary_key": false
+      }
+    ],
+    "relationships": []
+  },
+  {
+    "table": "orders",
+    "columns": [
+      {
+        "name": "id",
+        "type": "UUID",
+        "nullable": false,
+        "primary_key": true
+      },
+      {
+        "name": "customer_id",
+        "type": "UUID",
+        "nullable": true,
+        "primary_key": false,
+        "foreign_key": {
+          "referred_table": "customers",
+          "referred_column": "id"
+        }
+      },
+      {
+        "name": "order_date",
+        "type": "DATE",
+        "nullable": true,
+        "primary_key": false
+      },
+      {
+        "name": "status",
+        "type": "VARCHAR",
+        "nullable": false,
+        "primary_key": false
+      },
+      {
+        "name": "total_amount",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary_key": false
+      }
+    ],
+    "relationships": [
+      {
+        "from_column": "customer_id",
+        "to_table": "customers",
+        "to_column": "id"
+      }
+    ]
+  },
+  {
+    "table": "order_items",
+    "columns": [
+      {
+        "name": "id",
+        "type": "UUID",
+        "nullable": false,
+        "primary_key": true
+      },
+      {
+        "name": "order_id",
+        "type": "UUID",
+        "nullable": true,
+        "primary_key": false,
+        "foreign_key": {
+          "referred_table": "orders",
+          "referred_column": "id"
+        }
+      },
+      {
+        "name": "product_id",
+        "type": "UUID",
+        "nullable": true,
+        "primary_key": false,
+        "foreign_key": {
+          "referred_table": "products",
+          "referred_column": "id"
+        }
+      },
+      {
+        "name": "quantity",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary_key": false
+      },
+      {
+        "name": "price",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary_key": false
+      }
+    ],
+    "relationships": [
+      {
+        "from_column": "order_id",
+        "to_table": "orders",
+        "to_column": "id"
+      },
+      {
+        "from_column": "product_id",
+        "to_table": "products",
+        "to_column": "id"
+      }
+    ]
+  }
+]
