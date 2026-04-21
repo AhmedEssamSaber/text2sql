@@ -13,5 +13,7 @@ class Settings:
     DB_PASSWORD: str = os.getenv("DB_PASSWORD")
 
     EMBEDDING_MODEL_NAME: str = os.getenv("EMBEDDING_MODEL_NAME")
+    GENERATION_MODEL_NAME: str = os.getenv("GENERATION_MODEL_NAME")
+    ADAPTER_LAYER: str = os.getenv("ADAPTER_LAYER")
     
 settings = Settings()
