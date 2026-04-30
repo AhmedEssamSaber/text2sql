@@ -1,5 +1,5 @@
 from app.core.database import SessionLocal
-from app.createdb import Customer, Product, Category, Order, OrderItem
+from app.db_models import Customer, Product, Category, Order, OrderItem
 from datetime import date
 
 

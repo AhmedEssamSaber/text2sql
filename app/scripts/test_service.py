@@ -1,33 +1,21 @@
-from app.llm.generator import SQLGenerator
-
-def main():
-    model_path = r"D:\Ai courses\text2sql\merged-model"
-
-    generator = SQLGenerator(model_path)
-
-    while True:
-        question = input("\nEnter your question (or 'exit'): ")
-
-        if question.lower() == "exit":
-            break
-
-        prompt = f"""You are an expert SQL generator.
-
-### Rules:
-- Return ONLY SQL query
-- No explanation
-
-### User Question:
-{question}
-
-### SQL Query:
-"""
-
-        result = generator.generate(prompt)
-
-        print("\n===== SQL =====")
-        print(result)
+from app.services.text2sql_service import Text2SQLService
+from app.core.config import settings
 
 
-if __name__ == "__main__":
-    main()
+service = Text2SQLService(
+    index_path=settings.INDEX_PATH,
+    texts_path=settings.TEXTS_PATH
+)
+
+questions = [
+    "list all customers from germany",
+    "customers who never placed orders",
+    "total revenue from usa in 2024",
+    "top 5 products by quantity sold"
+]
+
+for q in questions:
+    print("Q:", q)
+    sql = service.generate(q)
+    print("SQL:", sql)
+    print("-" * 50)

@@ -1,4 +1,4 @@
-from app.createdb import Base
+from app.db_models import Base
 from app.core.database import engine
 
 def main():

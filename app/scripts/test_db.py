@@ -1,5 +1,5 @@
 from app.core.database import SessionLocal
-from app.createdb import Customer
+from app.db_models import Customer
 
 def main():
     session = SessionLocal()
@@ -9,4 +9,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+    
     
