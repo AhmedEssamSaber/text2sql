@@ -15,5 +15,12 @@ class Settings:
     EMBEDDING_MODEL_NAME: str = os.getenv("EMBEDDING_MODEL_NAME")
     GENERATION_MODEL_NAME: str = os.getenv("GENERATION_MODEL_NAME")
     ADAPTER_LAYER: str = os.getenv("ADAPTER_LAYER")
+
+
+    INDEX_PATH: str = os.getenv("INDEX_PATH")
+    TEXTS_PATH: str = os.getenv("TEXTS_PATH")
+    MODEL_PATH: str = os.getenv("MODEL_PATH")
+
+    GROQ_API_KEY: str = os.getenv("GROQ_API_KEY")
     
 settings = Settings()
