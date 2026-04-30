@@ -1,35 +1,32 @@
-from transformers import AutoTokenizer, AutoModelForCausalLM
-import torch
-
+from app.utils.sql_validator import SQLValidator
+from app.core.config import setting
 
 class SQLGenerator:
-    def __init__(self, model_path):
-        self.device = "cuda" if torch.cuda.is_available() else "cpu"
 
-        self.tokenizer = AutoTokenizer.from_pretrained(model_path)
+    def __init__(self, client, model=setting.GENERATION_MODEL_NAME, temperature=0):
+        self.client = client
+        self.model = model
+        self.temperature = temperature
 
-        self.model = AutoModelForCausalLM.from_pretrained(
-            model_path,
-            torch_dtype=torch.float16,
-            device_map="auto"
-        )
+    def generate(self, prompt: str) -> str:
 
-        self.model.eval()
+        for _ in range(3):  # retry max 3 times
+            try:
+                response = self.client.chat.completions.create(
+                    model=self.model,
+                    messages=[{"role": "user", "content": prompt}],
+                    temperature=self.temperature
+                )
 
-    def generate(self, prompt, max_new_tokens=150):
-        inputs = self.tokenizer(prompt, return_tensors="pt").to(self.device)
+                sql = response.choices[0].message.content.strip()
 
-        with torch.no_grad():
-            outputs = self.model.generate(
-                **inputs,
-                max_new_tokens=max_new_tokens,
-                do_sample=False,
-                pad_token_id=self.tokenizer.eos_token_id
-            )
+                if SQLValidator.basic_check(sql):
+                    return SQLValidator.fix_format(sql)
 
-        result = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
+                print("⚠️ Invalid SQL, retrying...")
 
-        if "### SQL Query:" in result:
-            return result.split("### SQL Query:")[-1].strip()
+            except Exception as e:
+                print(f"⚠️ API Error: {e}")
 
-        return result.strip()
+        print("❌ Failed after retries → fallback")
+        return "SELECT 1;"

@@ -1,40 +1,77 @@
-from typing import List
+from typing import List, Dict
+
 
 class PromptBuilder:
-    def __init__(self):
-        pass
 
-    def build_prompt(self, query: str, schema_chunks: List[str]) -> str:
-        """
-        Build a prompt for the LLM by combining the user query with relevant schema information.
-        """
+    def _split_sections(self, docs: List[Dict]):
+        schema, joins, columns, examples, other = [], [], [], [], []
 
-        schema_text = "\n\n".join(schema_chunks)
+        for d in docs:
+            t = d.get("type", "")
+
+            if t == "table":
+                schema.append(d["text"])
+            elif t == "join":
+                joins.append(d["text"])
+            elif t == "column":
+                columns.append(d["text"])
+            elif t == "example":
+                examples.append(d["text"])
+            else:
+                other.append(d["text"])
+
+        return schema, joins, columns, examples, other
+
+    def load_full_schema(self):
+        with open("data/processed/schema_texts.txt", "r") as f:
+            lines = f.readlines()
+
+        cleaned = []
+        seen = set()
+
+        for l in lines:
+            l = l.strip()
+            if l and l not in seen:
+                cleaned.append(l)
+                seen.add(l)
+
+        return "\n".join(cleaned)
+
+    def build_prompt(self, question: str, retrieved_docs: List[Dict]) -> str:
+
+        schema, joins, columns, examples, other = self._split_sections(retrieved_docs)
+
+        full_schema = self.load_full_schema()
+
+        context = list(set(schema + joins + columns + other))
+        context_text = "\n".join(context)
+
+        examples = examples[:2]
+        example_text = "\n\n".join(examples)
 
         prompt = f"""
-You are an expert SQL generator.
+You are a PostgreSQL SQL expert.
 
-Your task is to generate a correct SQL query based on the given database schema and user question.
+### DATABASE SCHEMA:
+{full_schema}
 
-### Example:
-User Question: number of customers
-SQL Query: SELECT COUNT(*) FROM customers;
+### RETRIEVED CONTEXT:
+{context_text}
 
-### Rules:
-- Use only the tables and columns provided in the schema
-- Respect foreign key relationships when joining tables
-- Do not invent tables or columns
-- Use proper JOIN conditions based on foreign keys
-- Use GROUP BY when aggregation is needed
-- Return ONLY the SQL query without any explanation
-- Use PostgreSQL syntax
+### EXAMPLES:
+{example_text}
 
-### Database Schema:
-{schema_text}
+### RULES:
+- Use only tables and columns from schema
+- Use correct joins
+- Use GROUP BY when needed
+- Do not explain
+- Return only SQL
 
-### User Question:
-{query}
+### QUESTION:
+{question}
 
-### SQL Query:
+### SQL:
 """
-        return prompt.strip() 
+
+        return prompt.strip()
