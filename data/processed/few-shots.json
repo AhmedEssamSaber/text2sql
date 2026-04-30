@@ -1,0 +1,10 @@
+[
+  {
+    "question": "list all customers from germany",
+    "sql": "SELECT c.name FROM customers c WHERE c.country = 'Germany';"
+  },
+  {
+    "question": "customers who never placed orders",
+    "sql": "SELECT c.name FROM customers c WHERE NOT EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = c.id);"
+  }
+]
