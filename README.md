@@ -1,9 +1,17 @@
+
 ## Text2Sql Chat System
 An end-to-end AI-powered **Text-to-SQL system** with multi-turn conversational capabilities.  
 The system converts natural language questions into SQL queries, executes them on a PostgreSQL database, and returns results with explanations.
 
 ## Demo
+<<<<<<< HEAD
 <img width="800" height="388" alt="text2sqlgif" src="https://github.com/user-attachments/assets/ed5ad7bf-7882-4ef5-b7b9-5d25746253c6" />
+=======
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/ed5ad7bf-7882-4ef5-b7b9-5d25746253c6" 
+       width="700"/>
+</p>
+>>>>>>> 0f720a1e6a8b1401783ef024925344a4efe8899f
 
 ## System Architecture
 
@@ -136,7 +144,7 @@ conda activate text2sql
 ![UI](images/UI/Q3.png)
 
 ### API (Postman)
-![API](images/API/Chat.png)
+![API](images/Api/Chat.png)
 
 ## 🚀 Future Improvements
 
