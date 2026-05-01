@@ -140,8 +140,8 @@ conda activate text2sql
 
 ## 📸 Screenshots
 
-### UI
-![UI](images/UI/Q3.png)
+### Database
+![UI](images/db/database.png)
 
 ### API (Postman)
 ![API](images/Api/Chat.png)
