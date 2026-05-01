@@ -1,6 +1,6 @@
 
 
-https://github.com/user-attachments/assets/c5723396-99b5-4b00-ad34-9fda76d81649
+
 
 
 ## Text2Sql Chat System
@@ -10,7 +10,7 @@ The system converts natural language questions into SQL queries, executes them o
 ## Demo
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/ed5ad7bf-7882-4ef5-b7b9-5d25746253c6" 
+  <img src="[https://github.com/user-attachments/assets/ed5ad7bf-7882-4ef5-b7b9-5d25746253c6](https://github.com/user-attachments/assets/c5723396-99b5-4b00-ad34-9fda76d81649)" 
        width="700"/>
 </p>
 
