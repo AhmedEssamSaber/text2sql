@@ -37,6 +37,7 @@ class PromptBuilder:
 
         return "\n".join(cleaned)
 
+    
     def build_prompt(self, question: str, retrieved_docs: List[Dict]) -> str:
 
         schema, joins, columns, examples, other = self._split_sections(retrieved_docs)
@@ -70,6 +71,59 @@ You are a PostgreSQL SQL expert.
 
 ### QUESTION:
 {question}
+
+### SQL:
+"""
+        return prompt.strip()
+
+    
+    def build_chat_prompt(self, messages: List[Dict], retrieved_docs: List[Dict]) -> str:
+
+        schema, joins, columns, examples, other = self._split_sections(retrieved_docs)
+
+        full_schema = self.load_full_schema()
+
+        context = list(set(schema + joins + columns + other))
+        context_text = "\n".join(context)
+
+        examples = examples[:2]
+        example_text = "\n\n".join(examples)
+
+        # build chat history
+        history = ""
+        for m in messages:
+            role = m.get("role")
+            content = m.get("content")
+
+            if role == "user":
+                history += f"User: {content}\n"
+            else:
+                history += f"Assistant: {content}\n"
+
+        prompt = f"""
+You are a PostgreSQL SQL expert.
+
+### DATABASE SCHEMA:
+{full_schema}
+
+### RETRIEVED CONTEXT:
+{context_text}
+
+### EXAMPLES:
+{example_text}
+
+### CHAT HISTORY:
+{history}
+
+### TASK:
+Generate SQL for the LAST user request based on the conversation.
+
+### RULES:
+- Use only tables and columns from schema
+- Use correct joins
+- Use GROUP BY when needed
+- Do not explain
+- Return only SQL
 
 ### SQL:
 """
