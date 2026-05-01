@@ -1,6 +1,11 @@
+import random
+from faker import Faker
+from datetime import date, timedelta
+
 from app.core.database import SessionLocal
 from app.db_models import Customer, Product, Category, Order, OrderItem
-from datetime import date
+
+fake = Faker()
 
 
 def seed_data():
@@ -8,83 +13,80 @@ def seed_data():
 
     try:
         # Categories
-        cat1 = Category(name="Electronics")
-        cat2 = Category(name="Clothing")
-
-        session.add_all([cat1, cat2])
+        categories = [
+            Category(name="Electronics"),
+            Category(name="Clothing"),
+            Category(name="Books"),
+            Category(name="Home"),
+        ]
+        session.add_all(categories)
         session.commit()
 
         # Customers
-        c1 = Customer(
-            name="Ahmed",
-            email="ahmed@test.com",
-            country="Egypt"
-        )
-        c2 = Customer(
-            name="Sara",
-            email="sara@test.com",
-            country="UAE"
-        )
+        customers = []
+        for _ in range(200):
+            c = Customer(
+                name=fake.name(),
+                email=fake.email(),
+                country=random.choice(["Egypt", "UAE", "USA", "Germany"])
+            )
+            customers.append(c)
 
-        session.add_all([c1, c2])
+        session.add_all(customers)
         session.commit()
 
         # Products
-        p1 = Product(
-            name="Laptop",
-            price=1000,
-            category_id=cat1.id
-        )
-        p2 = Product(
-            name="T-Shirt",
-            price=50,
-            category_id=cat2.id
-        )
+        products = []
+        for _ in range(100):
+            p = Product(
+                name=fake.word(),
+                price=random.randint(10, 2000),
+                category_id=random.choice(categories).id
+            )
+            products.append(p)
 
-        session.add_all([p1, p2])
+        session.add_all(products)
         session.commit()
 
-        # Orders
-        o1 = Order(
-            customer_id=c1.id,
-            status="completed",
-            total_amount=1000,
-            order_date=date(2024, 1, 10)
-        )
+        # Orders + OrderItems
+        for _ in range(500):
+            customer = random.choice(customers)
 
-        o2 = Order(
-            customer_id=c2.id,
-            status="pending",
-            total_amount=50,
-            order_date=date(2024, 2, 15)
-        )
+            order = Order(
+                customer_id=customer.id,
+                status=random.choice(["completed", "pending", "cancelled"]),
+                total_amount=0,
+                order_date=date(2023, 1, 1) + timedelta(days=random.randint(0, 365))
+            )
 
-        session.add_all([o1, o2])
-        session.commit()
+            session.add(order)
+            session.commit()
 
-        # Order Items
-        oi1 = OrderItem(
-            order_id=o1.id,
-            product_id=p1.id,
-            quantity=1,
-            price=1000
-        )
+            total = 0
 
-        oi2 = OrderItem(
-            order_id=o2.id,
-            product_id=p2.id,
-            quantity=1,
-            price=50
-        )
+            for _ in range(random.randint(1, 5)):
+                product = random.choice(products)
+                quantity = random.randint(1, 3)
 
-        session.add_all([oi1, oi2])
-        session.commit()
+                oi = OrderItem(
+                    order_id=order.id,
+                    product_id=product.id,
+                    quantity=quantity,
+                    price=product.price
+                )
 
-        print(" Data inserted successfully!")
+                total += product.price * quantity
+
+                session.add(oi)
+
+            order.total_amount = total
+            session.commit()
+
+        print("Large dataset inserted successfully!")
 
     except Exception as e:
         session.rollback()
-        print(" Error:", e)
+        print("Error:", e)
 
     finally:
         session.close()
