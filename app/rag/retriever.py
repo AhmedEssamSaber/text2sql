@@ -1,31 +1,3 @@
-# from typing import List
-# from app.rag.embedder import get_embedder
-# from app.rag.vector_store import VectorStore
-
-# class Retriever:
-#     def __init__(self, index_path: str, texts_path: str):
-#         self.vector_store = VectorStore(index_path, texts_path)
-#         self.embedder = get_embedder()
-
-#     def retrieve(self, query: str, k: int = 5) -> List[str]:
-#         """
-#         Given a user query, retrieve the top-k most relevant documents.
-#         """
-
-#         # embed the query
-#         query_embedding = self.embedder.embed_query(query)
-        
-#         # search in vector db
-#         results = self.vector_store.search(query_embedding, k)
-
-#         # clean the results by removing the "passage: " prefix
-#         cleaned_results = [
-#             r.replace("passage: ", "").strip() 
-#             for r in results
-#         ]
-
-#         return list(set(cleaned_results))
-
 from typing import List, Dict
 from app.rag.embedder import get_embedder
 from app.rag.vector_store import VectorStore
@@ -79,13 +51,13 @@ class Retriever:
             # classify
             t = self._classify(cleaned)
 
-            # 🔥 enforce diversity (important)
+            # enforce diversity (important)
             if t in seen_types and t != "example":
                 continue
 
             seen_types.add(t)
 
-            # 🔥 boost joins
+            # boost joins
             if t == "join":
                 score += 0.15
 
