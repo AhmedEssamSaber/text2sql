@@ -137,7 +137,7 @@ conda activate text2sql
 ![UI](images/UI/Q3.png)
 
 ### API (Postman)
-![API](images/API/Chat.png)
+![API](images/Api/Chat.png)
 
 ## 🚀 Future Improvements
 
