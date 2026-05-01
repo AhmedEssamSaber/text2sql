@@ -1,4 +1,8 @@
 
+
+https://github.com/user-attachments/assets/c5723396-99b5-4b00-ad34-9fda76d81649
+
+
 ## Text2Sql Chat System
 An end-to-end AI-powered **Text-to-SQL system** with multi-turn conversational capabilities.  
 The system converts natural language questions into SQL queries, executes them on a PostgreSQL database, and returns results with explanations.
