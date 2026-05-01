@@ -4,7 +4,10 @@ An end-to-end AI-powered **Text-to-SQL system** with multi-turn conversational c
 The system converts natural language questions into SQL queries, executes them on a PostgreSQL database, and returns results with explanations.
 
 ## Demo
-<img width="1000" height="500" alt="text2sqlgif" src="https://github.com/user-attachments/assets/ed5ad7bf-7882-4ef5-b7b9-5d25746253c6" />
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/ed5ad7bf-7882-4ef5-b7b9-5d25746253c6" 
+       width="700"/>
+</p>
 
 ## System Architecture
 
