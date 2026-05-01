@@ -6,7 +6,11 @@ The system converts natural language questions into SQL queries, executes them o
 
 
 ## System Architecture
+<<<<<<< HEAD
 ![System Architecture](images/Architecture/Flow.png)
+=======
+![System Architecture](images/Architecture/flow.png)
+>>>>>>> 5562225016e4436725efbd9d6c986b7aa1719eae
 
 ## System Structure 
 
